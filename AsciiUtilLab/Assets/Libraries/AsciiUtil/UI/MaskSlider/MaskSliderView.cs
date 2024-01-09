@@ -10,6 +10,8 @@ using UniRx;
 public class MaskSliderView : MonoBehaviour
 {
     [SerializeField]
+    private Image backGroundImage;
+    [SerializeField]
     private Image fillImage;
     private Slider slider;
     void Start()

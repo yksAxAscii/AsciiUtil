@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace AsciiUtil
 {
-    [System.Serializable, CreateAssetMenu(menuName = "AsciiState/CloneableStateInfo")]
+    [System.Serializable, CreateAssetMenu(menuName = "AsciiUtil/State/CloneableStateInfo")]
     public class CloneableStateInfo : ScriptableStateInfo
     {
         private Dictionary<ScriptableStateData, ScriptableStateData> cloneableStateData;

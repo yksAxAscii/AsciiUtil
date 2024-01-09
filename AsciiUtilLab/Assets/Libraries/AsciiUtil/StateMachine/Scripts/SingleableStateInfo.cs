@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace AsciiUtil
 {
-    [System.Serializable, CreateAssetMenu(menuName = "AsciiState/SingleableStateInfo")]
+    [System.Serializable, CreateAssetMenu(menuName = "AsciiUtil/State/SingleableStateInfo")]
     public class SingleableStateInfo : ScriptableStateInfo
     {
         public override ScriptableStateInfo InitializeStateInfo()

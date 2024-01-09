@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AsciiUtil
 {
-    [CreateAssetMenu(menuName = "AsciiState/ScriptableStateData")]
+    [CreateAssetMenu(menuName = "AsciiUtil/State/ScriptableStateData")]
     [System.Serializable]
     public class ScriptableStateData : ScriptableObject
     {
