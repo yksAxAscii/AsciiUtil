@@ -6,37 +6,26 @@ namespace AsciiUtil
     /// <summary>
     /// 複数回呼べるゲームイベント
     /// </summary>
-    [CreateAssetMenu(menuName = "GameEvent/ReusableGameEvent")]
-    public class GameEvent : ScriptableObject
+    [CreateAssetMenu(menuName = "AsciiUtil/GameEvent/ReusableGameEvent")]
+    public class GameEvent : GameEvent<Unit>
+    {
+        public override void Raise(Unit value = default(Unit))
+        {
+            eventSubject.OnNext(Unit.Default);
+        }
+    }
+    public class GameEvent<T> : ScriptableObject
     {
         [SerializeField]
         protected string eventKey;
         public string EventKey => eventKey;
-        [SerializeReference, SubclassSelector]
-        private IGameEventActionable[] onRaisedAction;
         [System.NonSerialized]
-        protected Subject<Unit> eventSubject = new Subject<Unit>();
-        public IObservable<Unit> EventSubject => eventSubject;
-        [System.NonSerialized]
-        private bool isInitialized = false;
+        protected Subject<T> eventSubject = new Subject<T>();
+        public IObservable<T> EventSubject => eventSubject;
 
-        public virtual void Raise()
+        public virtual void Raise(T value)
         {
-            if (!isInitialized)
-            {
-                eventSubject.Subscribe(_ =>
-                {
-                    if (onRaisedAction != null)
-                    {
-                        foreach (var action in onRaisedAction)
-                        {
-                            action.Action();
-                        }
-                    }
-                });
-                isInitialized = true;
-            }
-            eventSubject.OnNext(Unit.Default);
+            eventSubject.OnNext(value);
         }
 
         public virtual void Dispose()
