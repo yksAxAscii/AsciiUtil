@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UniRx;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 namespace AsciiUtil.UI
 {
     public class SlideWindow : MonoBehaviour
     {
         [SerializeField]
-        private TweenAnimationPlayer actionableContents;
+        private FeedbackActionData openFeedback;
+        [SerializeField]
+        private FeedbackActionData closeFeedback;
         [SerializeField]
         private GameEvent onClosedEvent;
         private UnityAction onItitialized;
@@ -41,8 +42,7 @@ namespace AsciiUtil.UI
         /// </summary>
         public async void OpenWindow()
         {
-            actionableContents.gameObject.SetActive(true);
-            await actionableContents.PlayAnimation("Open").AsyncWaitForCompletion();
+            await openFeedback.CreateSequence(transform).Play().AsyncWaitForCompletion();
             onOpened?.Invoke();
         }
 
@@ -51,7 +51,7 @@ namespace AsciiUtil.UI
         /// </summary>
         public async void CloseWindow()
         {
-            await actionableContents.PlayAnimation("Close").AsyncWaitForCompletion();
+            await closeFeedback.CreateSequence(transform).Play().AsyncWaitForCompletion();
             onClosed?.Invoke();
         }
     }

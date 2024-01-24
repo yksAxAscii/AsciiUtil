@@ -14,16 +14,16 @@ namespace AsciiUtil
         [SerializeReference, SubclassSelector, Header("フィードバックアクション")]
         private ITweenActionable[] feedbackActions;
 
-        public (string key, Tween sequence) CreateSequence(Transform transform)
+        public Tween CreateSequence(Transform transform)
         {
-            var tweenCache = DOTween.Sequence();
+            var tween = DOTween.Sequence();
             foreach (var feedback in feedbackActions)
             {
-                var tween = feedback?.Play(transform);
-                if (tween == null) continue;
-                tweenCache.Append(feedback.Play(transform));
+                var feedbackTween = feedback?.Play(transform);
+                if (feedbackTween == null) continue;
+                tween.Append(feedback.Play(transform));
             }
-            return (feedbackKey, tweenCache);
+            return tween;
         }
     }
 }

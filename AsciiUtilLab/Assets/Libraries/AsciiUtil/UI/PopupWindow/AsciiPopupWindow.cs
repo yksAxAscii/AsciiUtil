@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Cysharp.Threading.Tasks;
 using UniRx;
 using DG.Tweening;
 
@@ -9,35 +8,42 @@ namespace AsciiUtil.UI
     public class AsciiPopupWindow : MonoBehaviour
     {
         [SerializeField]
-        private TweenAnimationPlayer actionableContents;
+        private FeedbackActionData openFeedback;
+        [SerializeField]
+        private FeedbackActionData closeFeedback;
+        [SerializeField]
+        private bool isOpenOnEnable;
         [SerializeField]
         private GameEvent onClosedEvent;
         private UnityAction onItitialized;
         public UnityAction OnItitialized => onItitialized;
         private UnityAction onOpened;
-        public UnityAction OnOpened => onOpened;
+        public UnityAction OnOpened { get => onOpened; set => onOpened = value; }
         private UnityAction onClosed;
-        public UnityAction OnClosed => onClosed;
-        private void Start()
+        public UnityAction OnClosed { get => onClosed; set => onClosed = value; }
+        private const string OpenFeedbackKey = "Open";
+        private const string CloseFeedbackKey = "Close";
+        private void Awake()
         {
             onItitialized?.Invoke();
-            onClosed += () =>
-            {
-                gameObject.SetActive(false);
-            };
             onClosedEvent?.EventSubject.Subscribe(_ => ClosePopupWindow());
+        }
+
+        private void OnEnable()
+        {
+            if (!isOpenOnEnable) return;
+            OpenPopupWindow();
         }
 
         public async void OpenPopupWindow()
         {
-            actionableContents.gameObject.SetActive(true);
-            await actionableContents.PlayAnimation("Open").AsyncWaitForCompletion();
+            await openFeedback.CreateSequence(transform).Play().AsyncWaitForCompletion();
             onOpened?.Invoke();
         }
 
         public async void ClosePopupWindow()
         {
-            await actionableContents.PlayAnimation("Close").AsyncWaitForCompletion();
+            await closeFeedback.CreateSequence(transform).Play().AsyncWaitForCompletion();
             onClosed?.Invoke();
         }
     }

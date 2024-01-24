@@ -16,7 +16,7 @@ namespace AsciiUtil.UI
         [SerializeField, Header("Tweenパラメータ")]
         private TweenParameter tweenParameter;
         [SerializeField]
-        private TweenAnimationPlayer feedbackPlayer;
+        private FeedbackActionData feedback;
         [SerializeField, Header("表示する小数点以下の桁数")]
         private int fractionDigits = 0;
         public int FractionDigits { get => fractionDigits; set => fractionDigits = value; }
@@ -60,7 +60,7 @@ namespace AsciiUtil.UI
                  .SetUpdate(true)
                  .OnKill(() => previousValue = value)
                  .OnComplete(() => previousValue = currentValue);
-            feedbackPlayer?.PlayAnimation();
+            feedback?.CreateSequence(transform).Play();
         }
 
         private string ConvertNumberToUnit(float number)

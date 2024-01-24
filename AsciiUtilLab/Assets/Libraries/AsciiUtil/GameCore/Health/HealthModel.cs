@@ -32,8 +32,14 @@ namespace AsciiUtil
         public async void Initialize()
         {
             cts = new CancellationTokenSource();
-
-            await UniTask.WaitUntil(() => currentHealth.Value <= deathHealthValue, cancellationToken: cts.Token);
+            try
+            {
+                await UniTask.WaitUntil(() => currentHealth.Value <= deathHealthValue, cancellationToken: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
             onDeath?.Invoke();
         }
 

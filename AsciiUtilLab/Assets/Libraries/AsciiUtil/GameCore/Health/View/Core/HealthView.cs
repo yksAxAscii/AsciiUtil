@@ -6,7 +6,7 @@ namespace AsciiUtil
     public abstract class HealthView : MonoBehaviour
     {
         [SerializeField, Header("フィードバック\nなくてもOK")]
-        protected TweenAnimationPlayer feedbackPlayer;
+        protected FeedbackActionData feedback;
         [SerializeField, Header("増減にかかる時間")]
         protected float durationSec;
         [SerializeField, Header("増減の計算方法")]
@@ -30,7 +30,7 @@ namespace AsciiUtil
                 currentTween.Kill();
             }
             previousHealth = currentHealth;
-            feedbackPlayer?.PlayAnimation();
+            feedback?.CreateSequence(transform).Play();
             currentTween = DOTween.To(
                 () => currentHealth,
                 value => currentHealth = value,

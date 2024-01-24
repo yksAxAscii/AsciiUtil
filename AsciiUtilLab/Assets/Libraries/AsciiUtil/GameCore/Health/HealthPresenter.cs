@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UniRx;
-using AsciiUtil.Tools;
-
+using DG.Tweening;
 namespace AsciiUtil
 {
     public class HealthPresenter : MonoBehaviour
@@ -11,7 +10,7 @@ namespace AsciiUtil
         private float maxHealth;
         public float MaxHealth => maxHealth;
         [SerializeField]
-        private TweenAnimationPlayer feedbackPlayer;
+        private FeedbackActionData feedback;
         [SerializeField]
         private HealthView view;
         private HealthModel model;
@@ -19,7 +18,8 @@ namespace AsciiUtil
 
         public void Initialize(float maxHealth, UnityAction onDeath = null)
         {
-            model = new HealthModel(maxHealth,onDeath);
+            view = view == null ? FindAnyObjectByType<HealthView>() : view;
+            model = new HealthModel(maxHealth, onDeath);
             this.maxHealth = maxHealth;
             view.Initialize(maxHealth);
             //モデルのヘルスに変化があったらViewをアップデート
@@ -34,7 +34,7 @@ namespace AsciiUtil
 
         public void TakeDamage(float value)
         {
-            feedbackPlayer?.PlayAnimation();
+            feedback?.CreateSequence(transform).Play();
             model.Decreasement(value);
         }
 

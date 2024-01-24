@@ -8,6 +8,7 @@ namespace AsciiUtil
         [SerializeField, Header("変更後のサイズ")]
         private Vector3 scaleTo;
 
+
         public override Tween Play(Transform transform)
         {
             return transform.DOScale(scaleTo, tweenParameter.Duration)

@@ -12,4 +12,9 @@ public class ReadOnlyDrawer : PropertyDrawer
         EditorGUI.PropertyField(position, property, label, true);
         GUI.enabled = true; // 編集を再度有効化
     }
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        // プロパティが展開される場合、適切な高さを計算して返す
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
 }

@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UniRx;
 
 /// <summary>
-/// マスクを使ったスライダーの描画
+/// マスクを使ったスライダー
 /// </summary>
 public class MaskSliderView : MonoBehaviour
 {
     [SerializeField]
-    private Image backGroundImage;
-    [SerializeField]
     private Image fillImage;
+    [SerializeField]
     private Slider slider;
-    void Start()
+    private float maxValue = 1.0f;
+
+    private void Start()
     {
-        slider = GetComponent<Slider>();
-        slider.OnValueChangedAsObservable()
-            .Subscribe(value =>
-            {
-                fillImage.fillAmount = value/ slider.maxValue;
-            });
+        slider.fillRect = null;
+        SetValue(slider.value);
+        slider.onValueChanged.AddListener(SetValue);
+    }
+
+    // スライダーの値を設定するメソッド
+    private void SetValue(float value)
+    {
+        fillImage.fillAmount = value / maxValue;
     }
 }
